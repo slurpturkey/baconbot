@@ -1,0 +1,2 @@
+# baconbot
+Discord Bot
