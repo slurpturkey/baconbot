@@ -1,5 +1,9 @@
 const commando = require('discord.js-commando');
+const fs = require('fs');
 var unirest = require('unirest');
+
+const filePath = "vendorauth.json";
+const auth = JSON.parse(fs.readFileSync(filePath, 'utf8'));
 
 class DefineCommand extends commando.Command {
     constructor(client){
@@ -12,70 +16,69 @@ class DefineCommand extends commando.Command {
     }
 
     async run(message, args){
-
-
         await unirest.get("https://mashape-community-urban-dictionary.p.mashape.com/define?term=" + args)
-        .header("X-Mashape-Key", "scRcagJx1emshHV6QODp4QXJonYBp1uGz8cjsnCSGGhbNUhsWc")
-        .header("Accept", "text/plain")
-        .end(function (result) {
-            if(result.body){
-                //if(result.body.result_type == "exact"){
-                for(let i = 0; i < 9; i++){
-                    if(result.body.list[i]){
-                        if(result.body.list[i].definition.length < 2000){
-                            let def = result.body.list[i].definition;
-                            def = def.replace(/\[/g, '');
-                            def = def.replace(/\]/g, '');
-                            if(result.body.list[i].example){
-                                let eg = result.body.list[i].example;
-                                eg = eg.replace(/\[/g, '');
-                                eg = eg.replace(/\]/g, '');
-                                message.channel.send({embed: {
-                                    color: 0xfbf72d,
-                                    title: result.body.list[i].word,
-                                    url: encodeURI("https://www.urbandictionary.com/define.php?term=" + result.body.list[0].word),
-                                    description: def,
-                                    fields: [{
-                                        name: "Example",
-                                        value: eg
-                                    }]
-                                }});
-                                break;
-                            }
-                            else{
-                                message.channel.send({embed: {
-                                    color: 0xfbf72d,
-                                    title: result.body.list[i].word,
-                                    url: encodeURI("https://www.urbandictionary.com/define.php?term=" + result.body.list[0].word),
-                                    description: def
-                                }});
-                                break;
-                            }
-                        }
-                        else{
-                            continue;
-                        }
+        .header("X-Mashape-Key", auth.ud_key)
+        .header("Accept", "text/json")
+        .end(async function(data){
+            await processData(data, message);
+        });
+    }
+}
 
-                    }
-                    else{
+async function processData(data, message){
+    if(data.body){
+        for(let i = 0; i < 9; i++){
+            if(data.body.list[i]){
+                let def = data.body.list[i].definition;
+                if(def.length < 2000){
+                    def = def.replace(/\[/g, '');
+                    def = def.replace(/\]/g, '');
+
+                    let eg = data.body.list[i].example;
+                    if(eg){
+                        eg = eg.replace(/\[/g, '');
+                        eg = eg.replace(/\]/g, '');
+
                         message.channel.send({embed: {
-                            color: 0xfbf72d, // yellow
-                            title: "Word not found",
-                            description: "Please try a different word."
+                            color: 0xfbf72d,
+                            title: data.body.list[i].word,
+                            url: encodeURI("https://www.urbandictionary.com/define.php?term=" + data.body.list[0].word),
+                            description: def,
+                            fields: [{
+                                name: "Example",
+                                value: eg
+                            }]
+                        }});
+                        break;
+                    }
+                    else {
+                        message.channel.send({embed: {
+                            color: 0xfbf72d,
+                            title: data.body.list[i].word,
+                            url: encodeURI("https://www.urbandictionary.com/define.php?term=" + data.body.list[0].word),
+                            description: def
                         }});
                         break;
                     }
                 }
-            }
+                else continue;
+            } 
             else{
                 message.channel.send({embed: {
-                    color: 0xfbf72d,
-                    title: "Syntax error",
+                    color: 0xfbf72d, // yellow
+                    title: "Word not found",
                     description: "Please try a different word."
-                }})
+                }});
+                break;
             }
-
-        })
+        }
+    }
+    else {
+        message.channel.send({embed: {
+            color: 0xfbf72d,
+            title: "Syntax error",
+            description: "Please try a different word."
+        }})
     }
 }
 
