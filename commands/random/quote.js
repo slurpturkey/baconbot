@@ -25,9 +25,9 @@ class Quote extends commando.Command {
             channelCollection.forEach(async function(channel){
                 if(channel.type == 'text' && running == false){
                     running = true;
-                    passiveCommands.loadPins(channel);
-                    running = false;
+                    await passiveCommands.loadPins(channel);
                 }
+                running = false;
             });
             parsePins(message.channel);
         }
