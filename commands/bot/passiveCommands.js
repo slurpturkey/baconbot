@@ -14,6 +14,7 @@ module.exports = {
     },
 
     loadPins: async function(channel){
+
         console.log("Loading Pins...");
 
         let pinsPath = __dirname + "/../../pins.json";
@@ -63,6 +64,7 @@ module.exports = {
         });
 
         console.log("Pins Loaded!");
+        return 0;
     },
 
     getAllChannels: async function(guild){
