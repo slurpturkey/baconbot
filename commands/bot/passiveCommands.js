@@ -1,6 +1,9 @@
 const Discord = require('discord.js');
 const fs = require('fs');
 
+// TODO: instead of just getting pins from channels and rewriting the file every time, parse the text file first and then compare JSONs and 
+// if there's a difference, then rewrite
+
 module.exports = {
     currentChannelID: function(guild){
         let latestChannel = 0;
@@ -15,21 +18,28 @@ module.exports = {
 
     loadPins: async function(channel){
 
-        console.log("Loading " + channel.name + " channel...");
-
+        
         let pinsPath = __dirname + "/../../pins.json";
-
+        
         let channelMessages = new Discord.Collection();
         let messageCollection = new Discord.Collection();
         let guild = channel.guild;
         let messageArray = new Array();
         let objectArray = new Array();
-
+        
         let iter = guild.channels[Symbol.iterator]();
         for(let i of iter){
             if(i[1].type == 'text'){
-                channelMessages = await i[1].fetchPinnedMessages();
-                messageCollection = await messageCollection.concat(channelMessages);
+                console.log("Loading " + i[1].name + " channel...");
+
+                if(i[1].permissionsFor(guild.me).hasPermission('VIEW_CHANNEL')){
+                    channelMessages = await i[1].fetchPinnedMessages();
+                    messageCollection = await messageCollection.concat(channelMessages);
+                    console.log(i[1].name + " channel found!");
+                }else{
+                    console.log("Insufficient permissions to access " + i[1].name + " channel...");
+                }
+
             }
         }
 
@@ -37,6 +47,9 @@ module.exports = {
 
         for(let i = 0; i < messageArray.length; i++){
             if(messageArray[i].member){
+
+                //console.log("Adding pin \'" + messageArray[i].content + "\' from " + messageArray[i].member.nickname + " in " + messageArray[i].channel.name + " channel...");
+
                 if(messageArray[i].author.bot != true){
                     await objectArray.push({
                         content: messageArray[i].content,
@@ -63,7 +76,6 @@ module.exports = {
             if(error) throw error;
         });
 
-        console.log(channel.name + " channel Loaded!");
         return 0;
     },
 

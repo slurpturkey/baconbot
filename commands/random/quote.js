@@ -21,15 +21,8 @@ class Quote extends commando.Command {
         
         if(args == "-l") passiveCommands.loadPins(message.channel)
         else{
-            let channelCollection = await passiveCommands.getAllChannels(message.channel.guild); // pick up here. trying to find an easier way to collect all pins into file.
-            channelCollection.forEach(async function(channel){
-                if(channel.type == 'text' && running == false){
-                    running = true;
-                    await passiveCommands.loadPins(channel);
-                }
-                running = false;
-            });
             parsePins(message.channel);
+            await passiveCommands.loadPins(message.channel);
         }
 
         //message.channel.send("Be patient you turd.");
