@@ -22,7 +22,7 @@ class Quote extends commando.Command {
         if(args == "-l") passiveCommands.loadPins(message.channel)
         else{
             parsePins(message.channel);
-            await passiveCommands.loadPins(message.channel);
+            //await passiveCommands.loadPins(message.channel);
         }
 
         //message.channel.send("Be patient you turd.");
@@ -43,7 +43,10 @@ async function parsePins(channel){
                 name: randMessage.user.name, // Nickname of the author of the pinned message
                 icon_url: randMessage.user.avatar // Avatar of the author of the pinned message
             },
-            description: randMessage.content // The content of the pinned message
+            description: randMessage.content, // The content of the pinned message
+            image: {
+                url: randMessage.attach
+            }
         }});
     });
 }

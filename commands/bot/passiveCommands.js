@@ -48,24 +48,44 @@ module.exports = {
         for(let i = 0; i < messageArray.length; i++){
             if(messageArray[i].member){
 
-                //console.log("Adding pin \'" + messageArray[i].content + "\' from " + messageArray[i].member.nickname + " in " + messageArray[i].channel.name + " channel...");
-
-                if(messageArray[i].author.bot != true){
+                if(messageArray[i].author.bot != true && messageArray[i].attachments.size == 0){
                     await objectArray.push({
                         content: messageArray[i].content,
                         user: {
                             name: messageArray[i].member.nickname,
                             avatar: messageArray[i].author.avatarURL
-                        }
+                        },
+                        attach: ""
                     });
                 }
-                else{
+                else if(messageArray[i].author.bot == true && messageArray[i].attachments.size == 0){
                     await objectArray.push({
                         content: messageArray[i].embeds[0].description,
                         user: {
                             name: messageArray[i].member.nickname,
                             avatar: messageArray[i].author.avatarURL
-                        }
+                        },
+                        attach: ""
+                    });
+                }
+                else if(messageArray[i].author.bot != true && messageArray[i].attachments.size > 0){
+                    await objectArray.push({
+                        content: messageArray[i].content,
+                        user: {
+                            name: messageArray[i].member.nickname,
+                            avatar: messageArray[i].author.avatarURL
+                        },
+                        attach: messageArray[i].attachments.first().url
+                    });
+                }
+                else if(messageArray[i].author.bot == true && messageArray[i].attachments.size > 0){
+                    await objectArray.push({
+                        content: messageArray[i].embeds[0].description,
+                        user: {
+                            name: messageArray[i].member.nickname,
+                            avatar: messageArray[i].author.avatarURL
+                        },
+                        attach: messageArray[i].attachments.first().url
                     });
                 }
             }
