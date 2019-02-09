@@ -15,7 +15,7 @@ module.exports = {
 
     loadPins: async function(channel){
 
-        console.log("Loading Pins...");
+        console.log("Loading " + channel.name + " channel...");
 
         let pinsPath = __dirname + "/../../pins.json";
 
@@ -63,7 +63,7 @@ module.exports = {
             if(error) throw error;
         });
 
-        console.log("Pins Loaded!");
+        console.log(channel.name + " channel Loaded!");
         return 0;
     },
 

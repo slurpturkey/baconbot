@@ -30,4 +30,4 @@ bot.on('ready', function(){
 bot.on('channelPinsUpdate', async function(channel, time){
     currentChannelID = channel.id;
     await passiveCommands.loadPins(channel);
-})
+});
