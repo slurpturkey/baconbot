@@ -15,6 +15,7 @@ const guildID = auth.guild_id;
 // register commands
 bot.registry.registerGroup('dictionary', 'Dictionary');
 bot.registry.registerGroup('random', 'Random');
+bot.registry.registerGroup('misc', 'Misc');
 bot.registry.registerCommandsIn(__dirname + "/commands");
 
 bot.on('error', function(){

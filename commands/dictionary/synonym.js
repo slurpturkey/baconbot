@@ -35,8 +35,6 @@ class SynonymCommand extends commando.Command {
             let synstr = syn.toString();
             synstr = synstr.replace(/,/g, ", ");
 
-            console.log(synstr);
-
             if(syn == ""){
                 message.channel.send({embed: {
                     color: 0xffaa33,
