@@ -1,6 +1,7 @@
 const commando = require('discord.js-commando');
 const fs = require('fs');
 const passiveCommands = require('./commands/bot/passiveCommands');
+const msg = require('./commands/bot/msg');
 
 // auth file (saves from hard-coding keys)
 const filePath = "discordauth.json";
@@ -18,6 +19,10 @@ bot.registry.registerCommandsIn(__dirname + "/commands");
 
 bot.on('error', function(){
     console.error();
+});
+
+bot.on('message', function(message){
+    msg.loadMessage(message);
 });
 
 // get latest channel pin by going through all the channels, grabbing the last pin of each channel, selecting the one with the latest date, getting the channel from that.
