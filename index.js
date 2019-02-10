@@ -22,7 +22,7 @@ bot.on('error', function(){
 });
 
 bot.on('message', function(message){
-    msg.loadMessage(message);
+    msg.appendMessage(message);
 });
 
 // get latest channel pin by going through all the channels, grabbing the last pin of each channel, selecting the one with the latest date, getting the channel from that.

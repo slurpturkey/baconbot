@@ -2,6 +2,7 @@ const fs = require('fs');
 
 let filePath = "./msg.txt";
 let sourceText = fs.readFileSync(filePath, 'utf8');
+let fileStats = fs.statSync(filePath);
 
 let data = sourceText.split('\n');
 
@@ -29,6 +30,14 @@ module.exports = {
         appendArray(str);
         fs.writeFileSync(filePath, "");
         fs.appendFileSync(filePath, '\n' + data[data.length - 1]);
+    },
+
+    appendMessage: function(mes){
+        if(!mes.author.bot){
+            if(fileStats.size < 5000000000){ // 5GB file limit
+                fs.appendFileSync(filePath, '\n' + mes.content);
+            }
+        }
     }
 }
 
