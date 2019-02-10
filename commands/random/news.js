@@ -19,8 +19,6 @@ class News extends commando.Command {
             let result = JSON.parse(body);
             let index = Math.floor((Math.random() * 50) + 1);
 
-            console.log(message.guild.me.user.avatarURL);
-
             message.channel.send({embed: {
                 color: 0x13c37a, // turquoise
                 title: "Breaking News!",
