@@ -24,7 +24,7 @@ class MarkovChain extends commando.Command {
 
     async run(message, args){
 
-        const options = {stateSize: 2, minScore: 50, maxWords: 15, minWords: 10, maxTries: 100000, filter: res => { return (res.score >= 100) && (_.size(res.refs) >= 10);}};
+        const options = {stateSize: 1, minScore: 50, maxWords: 15, minWords: 10, maxTries: 100000, filter: res => { return (res.score >= 50) && (_.size(res.refs) >= 5);}};
         const markov = await new Markov(msgs, options);
 
         markov.buildCorpusSync();
