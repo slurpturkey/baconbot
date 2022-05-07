@@ -50,6 +50,9 @@ module.exports = {
 
                 if(messageArray[i].author.bot != true && messageArray[i].attachments.size == 0){
                     await objectArray.push({
+                        id: messageArray[i].id,
+                        channelID: messageArray[i].channel.id,
+                        guildID: messageArray[i].guild.id,
                         content: messageArray[i].content,
                         user: {
                             name: messageArray[i].member.nickname,
@@ -60,6 +63,9 @@ module.exports = {
                 }
                 else if(messageArray[i].author.bot == true && messageArray[i].attachments.size == 0){
                     await objectArray.push({
+                        id: messageArray[i].id,
+                        channelID: messageArray[i].channel.id,
+                        guildID: messageArray[i].guild.id,
                         content: messageArray[i].embeds[0].description,
                         user: {
                             name: messageArray[i].member.nickname,
@@ -70,6 +76,9 @@ module.exports = {
                 }
                 else if(messageArray[i].author.bot != true && messageArray[i].attachments.size > 0){
                     await objectArray.push({
+                        id: messageArray[i].id,
+                        channelID: messageArray[i].channel.id,
+                        guildID: messageArray[i].guild.id,
                         content: messageArray[i].content,
                         user: {
                             name: messageArray[i].member.nickname,
@@ -80,6 +89,9 @@ module.exports = {
                 }
                 else if(messageArray[i].author.bot == true && messageArray[i].attachments.size > 0){
                     await objectArray.push({
+                        id: messageArray[i].id,
+                        channelID: messageArray[i].channel.id,
+                        guildID: messageArray[i].guild.id,
                         content: messageArray[i].embeds[0].description,
                         user: {
                             name: messageArray[i].member.nickname,
