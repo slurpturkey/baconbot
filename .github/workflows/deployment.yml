@@ -32,4 +32,4 @@ jobs:
         run: rsync -v -rvz --filter=':- .gitignore' ./ opc@${{ secrets.SSH_HOST }}:/usr/local/bin/baconbot
 
       - name: Run restart script
-        run: sudo ./deploy.sh
+        run: sh ./deploy.sh
