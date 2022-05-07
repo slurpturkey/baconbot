@@ -1,10 +1,10 @@
 #!/bin/sh
 
 #Update dependencies
-sudo npm update
+sudo npm install
 
 #Change permissions of directory and files
-sudo chmod -R 777 /usr/local/bin/baconbot
+sudo chmod -R 777 *
 
 #Reload configuration
 sudo systemctl daemon-reload
