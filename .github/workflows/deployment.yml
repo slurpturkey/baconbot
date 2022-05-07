@@ -31,3 +31,5 @@ jobs:
       - name: Deploy with rsync
         run: rsync -v -rvz ./commands opc@${{ secrets.SSH_HOST }}:/usr/local/bin/baconbot
 
+      - name: Run restart script
+        run: deploy.sh
