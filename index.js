@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env node 
 const commando = require('discord.js-commando');
 const fs = require('fs');
 const passiveCommands = require('./commands/bot/passiveCommands');
