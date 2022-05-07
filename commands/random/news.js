@@ -24,7 +24,12 @@ class News extends commando.Command {
             
             let result = JSON.parse(body);
             let index = Math.floor((Math.random() * 50) + 1);
-            let imageURL = result.data.children[index].data.preview.images[0].source.url;
+            let imageURL;
+
+            if (result.data.children[index].data.preview)
+                imageURL = result.data.children[index].data.preview.images[0].source.url
+            else
+                imageURL = ""
 
             message.channel.send({embed: {
                 color: 0x13c37a, // turquoise
