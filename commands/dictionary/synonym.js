@@ -6,7 +6,7 @@ const filePath = "vendorauth.json";
 const auth = JSON.parse(fs.readFileSync(filePath, 'utf8'));
 const key = auth.wordnik_key;
 const URL1 = "https://api.wordnik.com/v4/word.json/"
-const URL2 = "/relatedWords?useCanonical=false&limitPerRelationshipType=10&api_key="
+const URL2 = "/relatedWords?useCanonical=false&limitPerRelationshipType=100&api_key="
 
 class SynonymCommand extends commando.Command {
     constructor(client){
@@ -20,6 +20,23 @@ class SynonymCommand extends commando.Command {
 
     async run(message, args){
 
+        function shuffle(array) {
+            let currentIndex = array.length,  randomIndex;
+          
+            // While there remain elements to shuffle.
+            while (currentIndex != 0) {
+          
+              // Pick a remaining element.
+              randomIndex = Math.floor(Math.random() * currentIndex);
+              currentIndex--;
+          
+              // And swap it with the current element.
+              [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+            }
+          
+            return array;
+          }
+        
         request(URL1 + args + URL2 + key, {json: true}, function(err, res, body){
             if(err) throw err;
 
@@ -31,7 +48,9 @@ class SynonymCommand extends commando.Command {
                     break;
                 }
             }
-
+            
+            syn = shuffle(syn);
+            syn = syn.slice(0, 10);
             let synstr = syn.toString();
             synstr = synstr.replace(/,/g, ", ");
 
