@@ -10,4 +10,5 @@ sudo chmod -R 777 *
 sudo systemctl daemon-reload
 
 #Restart baconbot
-sudo systemctl restart baconbot.service
+#sudo systemctl restart baconbot.service
+sudo service baconbot.service restart
