@@ -44,7 +44,7 @@ async function parsePins(channel){
                 icon_url: randMessage.user.avatar // Avatar of the author of the pinned message
             },
             // If message has been deleted but pins haven't been reloaded, default behaviour is to jump anyway to the location of where the message was.
-            description: randMessage.content + "\n\n" + "[Context](https://discordapp.com/channels/" + randMessage.guildID + "/" + randMessage.channelID + "/" + randMessage.id + ")" , // The content of the pinned message
+            description: randMessage.content + "\n\n" + "[Go to original](https://discordapp.com/channels/" + randMessage.guildID + "/" + randMessage.channelID + "/" + randMessage.id + ")" , // The content of the pinned message
             image: {
                 url: randMessage.attach
             }
