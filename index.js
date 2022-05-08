@@ -24,7 +24,8 @@ bot.on('error', function(){
 });
 
 bot.on('message', function(message){
-    msg.appendMessage(message);
+    if(message.channel.id != "694914362095304771") // blacklist code channel from collecting source data for !markov command
+        msg.appendMessage(message);
 });
 
 // get latest channel pin by going through all the channels, grabbing the last pin of each channel, selecting the one with the latest date, getting the channel from that.
