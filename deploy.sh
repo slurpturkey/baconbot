@@ -6,24 +6,13 @@ sudo npm install
 #Change permissions of directory and files
 sudo chmod -R 777 *
 
-#Reload configuration
+# Copy service file, incase if there are any changes
+sudo cp demo.service /etc/systemd/system/baconbot.service
+# reload configurations incase if service file has changed
 sudo systemctl daemon-reload
-
-#Restart baconbot
-#sudo systemctl restart baconbot.service
-# 
-sudo cp baconbot.service /etc/systemd/system/baconbot.service
+# restart the service
+sudo systemctl restart baconbot.service
+# start of VM restart
 sudo systemctl enable baconbot.service
 
-sudo systemctl stop baconbot.service
-sudo systemctl start baconbot.service
 sudo systemctl status baconbot.service
-systemctl list-units --type=service
-systemctl list-unit-files
-journalctl --unit=baconbot.service -n 100 --no-pager
-
-ls /etc/systemd/system
-cd ~ 
-tree
-
-#test
