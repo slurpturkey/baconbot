@@ -33,7 +33,7 @@ class DefineCommand extends commando.Command {
     }
 }
 
-function processData(data, message){
+async function processData(data, message){
     if(data.body){
         for(let i = 0; i < 9; i++){
             if(data.body.list[i]){
@@ -87,7 +87,7 @@ function processData(data, message){
             title: "Syntax error",
             description: "Please try a different word."
         }})
-        console.log(data);
+        console.log("data:" + data);
     }
 }
 
