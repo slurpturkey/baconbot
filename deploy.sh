@@ -18,3 +18,5 @@ sudo systemctl restart baconbot.service
 sudo systemctl enable baconbot.service
 
 sudo systemctl status baconbot.service
+
+journalctl --unit=baconbot.service -n 100 --no-pager
