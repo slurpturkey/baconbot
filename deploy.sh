@@ -23,6 +23,7 @@ systemctl list-unit-files
 journalctl --unit=baconbot.service -n 100 --no-pager
 
 ls /etc/systemd/system
-ls /usr/local/bin/baconbot
+cd ~ 
+tree
 
 #test
