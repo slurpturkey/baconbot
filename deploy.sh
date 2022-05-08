@@ -15,13 +15,3 @@ sudo chmod -R 777 *
 
 # reload configurations incase if service file has changed
 sudo systemctl daemon-reload
-# restart the service
-sudo systemctl restart baconbot.service
-# start of VM restart
-sudo systemctl enable baconbot.service
-
-sudo systemctl status baconbot.service
-
-ls -a
-
-journalctl --unit=baconbot.service -n 100 --no-pager
