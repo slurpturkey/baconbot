@@ -31,5 +31,13 @@ jobs:
       - name: Deploy with rsync
         run: rsync -v -rvz --filter=':- .gitignore' ./ opc@${{ secrets.SSH_HOST }}:/usr/local/bin/baconbot
 
+      - name: Execute SSH commmands on remote server
+        uses: JimCronqvist/action-ssh@master
+        with:
+          hosts: 'opc@${{ secrets.SSH_HOST }}'
+          privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
+          command: sudo systemctl restart baconbot.service
+
       - name: Run restart script
         run: sh ./deploy.sh
+        shell: bash
