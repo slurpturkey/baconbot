@@ -24,6 +24,6 @@ journalctl --unit=baconbot.service -n 100 --no-pager
 ls -a
 cd ..
 ls -a
-ls /etc/system/systemd
+ls /etc/systemd/system
 
 #test
