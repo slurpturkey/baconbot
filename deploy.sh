@@ -17,7 +17,9 @@ sudo systemctl enable baconbot.service
 #Reload configuration
 sudo systemctl daemon-reload
 
-sudo systemctl restart baconbot.service
+sudo systemctl stop baconbot.service
+sudo systemctl start baconbot.service
+sudo systemctl status baconbot.service
 systemctl list-units --type=service
 systemctl list-unit-files
 #test
