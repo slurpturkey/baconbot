@@ -25,18 +25,15 @@ class DefineCommand extends commando.Command {
             "X-RapidAPI-Key": auth.ud_key,
             "useQueryString": true
         });
-        req.end(async function (res) {
+        req.end(function (res) {
             if (res.error) throw new Error(res.error);
         
-            console.log("before processData()");
-            await processData(res, message);
-            console.log("after processData()");
+            processData(res, message);
         });
     }
 }
 
-async function processData(data, message){
-    console.log("within processData()");
+function processData(data, message){
     if(data.body){
         for(let i = 0; i < 9; i++){
             if(data.body.list[i]){
