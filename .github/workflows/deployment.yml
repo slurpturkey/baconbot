@@ -30,9 +30,6 @@ jobs:
           
       - name: Deploy with rsync
         run: rsync -v -rvz --filter=':- .gitignore' ./ opc@${{ secrets.SSH_HOST }}:/usr/local/bin/baconbot
-        
-      - name: test
-        run: ssh staging 'mkdir test' 
 
       - name: Run restart script
         run: sh ./deploy.sh
