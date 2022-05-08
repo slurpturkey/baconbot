@@ -1,6 +1,6 @@
 const commando = require('discord.js-commando');
 const Discord = require('discord.js');
-const Markov = require('markov-strings');
+const Markov = require('markov-strings').default;
 const _ = require('lodash');
 const fs = require('fs');
 const msg = require('../bot/msg');
@@ -24,19 +24,18 @@ class MarkovChain extends commando.Command {
 
     async run(message, args){
 
-        const options = {stateSize: 1, minScore: 50, maxWords: 15, minWords: 10, maxTries: 100000, filter: res => { return (res.score >= 50) && (_.size(res.refs) >= 5);}};
-        const markov = await new Markov(msgs, options);
+        const options = {minScore: 100, maxWords: 15, minWords: 10, maxTries: 100000, filter: res => { return (res.score >= 100) && (_.size(res.refs) >= 10);}}; // Properties of markov chain
+        
+        const markov = await new Markov(msgs, {stateSize: 1});
 
-        markov.buildCorpusSync();
-        const result = markov.generateSentenceSync();
+        markov.buildCorpus();
+        const result = markov.generate(options);
         console.log(result);
 
         message.channel.send({embed: {
             color: 0x850000, // red
             description: result.string
         }});
-
-        //message.channel.send("I'm fucking working on it!!");
     }
 }
 
