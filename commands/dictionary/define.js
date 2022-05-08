@@ -28,12 +28,15 @@ class DefineCommand extends commando.Command {
         req.end(async function (res) {
             if (res.error) throw new Error(res.error);
         
+            console.log("before processData()");
             await processData(res, message);
+            console.log("after processData()");
         });
     }
 }
 
 async function processData(data, message){
+    console.log("within processData()");
     if(data.body){
         for(let i = 0; i < 9; i++){
             if(data.body.list[i]){
