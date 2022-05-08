@@ -23,4 +23,5 @@ sudo systemctl status baconbot.service
 systemctl list-units --type=service
 systemctl list-unit-files
 journalctl --unit=baconbot.service -n 100 --no-pager
+ls -a
 #test
