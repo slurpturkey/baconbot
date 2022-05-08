@@ -1,0 +1,14 @@
+[Unit]
+Description=Bacon Bot
+After=network.target
+StartLimitIntervalSec=0
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=nobody
+WorkingDirectory=/home/runner/work/baconbot/baconbot
+ExecStart=/home/runner/work/baconbot/baconbot/index.js
+
+[Install]
+WantedBy=multi-user.target
