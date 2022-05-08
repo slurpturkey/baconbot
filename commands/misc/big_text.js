@@ -12,7 +12,12 @@ class BigTextCommand extends commando.Command {
 
     async run(message, args){
         message.delete();
-        message.channel.send(message.author.lastMessage.member.nickname + " says:");
+
+        if(message.author.lastMessage.member.nickname)
+            message.channel.send(message.author.lastMessage.member.nickname + " says:");
+        else    
+            message.channel.send(message.author.username + " says:")
+        
         message.channel.send(parse(args.toLowerCase()));
     }
 }
