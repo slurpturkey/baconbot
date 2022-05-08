@@ -36,7 +36,7 @@ jobs:
         with:
           hosts: 'opc@${{ secrets.SSH_HOST }}'
           privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
-          command: ls -lah
+          command: sudo systemctl restart baconbot.service
 
       - name: Run restart script
         run: sh ./deploy.sh
