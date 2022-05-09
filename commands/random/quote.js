@@ -52,7 +52,7 @@ async function parsePins(channel){
                 }
             }})
         } catch(error) {
-            console.log(error);
+            channel.send("Error: " + error);
         };
     });
 }
