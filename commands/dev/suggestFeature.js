@@ -1,86 +1,62 @@
 const commando = require('discord.js-commando');
 const fs = require('fs');
-const request = require('request');
+const https = require('https');
 
 const filePath = "vendorauth.json";
 const auth = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-// Loconst key = auth.wordnik_key;
+const key = auth.trello_key;
+const token = auth.trello_token;
+const URL1 = "api.trello.com";
+const path = "/1/cards";
+const post_request_args = "?key=" + key + "&token=" + token;
 
-class SynonymCommand extends commando.Command {
+class suggestFeature extends commando.Command {
     constructor(client){
         super(client, {
-            name: 'synonym',
-            group: 'dictionary',
-            memberName: 'synonym',
-            description: 'Lists synonyms for the provided word'
+            name: 'suggestfeature',
+            group: 'dev',
+            memberName: 'suggestfeature',
+            description: 'Sends cards from Trello'
         });
     }
 
     async run(message, args){
+        console.log("sending job");
 
-        function shuffle(array) {
-            let currentIndex = array.length,  randomIndex;
-          
-            // While there remain elements to shuffle.
-            while (currentIndex != 0) {
-          
-              // Pick a remaining element.
-              randomIndex = Math.floor(Math.random() * currentIndex);
-              currentIndex--;
-          
-              // And swap it with the current element.
-              [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
-            }
-          
-            return array;
-          }
-        
-        request(URL1 + args + URL2 + key, {json: true}, function(err, res, body){
-            if(err) throw err;
-
-            let syn = "";
-
-            for(let i = 0; i < body.length; i++){
-                if(body[i].relationshipType == 'synonym') {
-                    syn = body[i].words;
-                    break;
-                }
-            }
-            
-            syn = shuffle(syn);
-            syn = syn.slice(0, 10);
-            let synstr = syn.toString();
-            synstr = synstr.replace(/,/g, ", ");
-
-            if(syn == ""){
-                message.channel.send({embed: {
-                    color: 0xffaa33,
-                    description: "Either the word was not found or there are no synonyms listed for it.",
-                    footer: {
-                        icon_url: message.guild.me.user.avatarURL,
-                        text: message.guild.me.nickname
-                    }
-                }});
-            }
-            else{
-                message.channel.send({embed: {
-                    color: 0xffaa33,
-                    fields: [
-                        {
-                            name: "Synonyms for *" + args + "*",
-                            value: synstr
-                        }
-                    ],
-                    footer: {
-                        icon_url: message.guild.me.user.avatarURL,
-                        text: message.guild.me.nickname
-                    }
-                }});
-            }
+        const data = JSON.stringify({
+            name: "this is a job",
+            desc: "I am describing the job",
+            pos: "top",
+            idList: "627859bfb5b5161121f4250b"
         });
 
-        //message.channel.send("Go do something else while you wait asshole.");
+        const options = {
+            hostname: URL1,
+            method: 'POST',
+            path: path + post_request_args,
+            headers: {
+                "Content-Type": "application/json",
+                "Content-Length": data.length,
+                key: key,
+                token: token
+            }
+        };
+        console.log(options);
+        const req = https.request(options, res => {
+            console.log(`statusCode: ${res.statusCode}`)
+            
+            res.on('data', d => {
+                process.stdout.write(d);
+              });
+        });
+
+        req.on('error', error => {
+            console.error(error);
+        });
+
+        req.write(data);
+        req.end();
     }
 }
 
-module.exports = SynonymCommand;
+module.exports = suggestFeature;
