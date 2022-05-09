@@ -16,11 +16,19 @@ class DefineCommand extends commando.Command {
     }
 
     async run(message, args){
-        await unirest.get("https://mashape-community-urban-dictionary.p.mashape.com/define?term=" + args)
-        .header("X-Mashape-Key", auth.ud_key)
-        .header("Accept", "text/json")
-        .end(async function(data){
-            await processData(data, message);
+        const req = unirest("GET", "https://mashape-community-urban-dictionary.p.rapidapi.com/define");
+        req.query({
+            "term": args
+        });
+        req.headers({
+            "X-RapidAPI-Host": "mashape-community-urban-dictionary.p.rapidapi.com",
+            "X-RapidAPI-Key": auth.ud_key,
+            "useQueryString": true
+        });
+        req.end(function (res) {
+            if (res.error) throw new Error(res.error);
+        
+            processData(res, message);
         });
     }
 }
@@ -79,6 +87,7 @@ async function processData(data, message){
             title: "Syntax error",
             description: "Please try a different word."
         }})
+        console.log("data:" + data);
     }
 }
 
