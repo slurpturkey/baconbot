@@ -17,7 +17,7 @@ class Quote extends commando.Command {
         });
     }
 
-    async run(message, args){
+    run(message, args){
         
         if(args == "-l") passiveCommands.loadPins(message.channel)
         else{
@@ -28,32 +28,31 @@ class Quote extends commando.Command {
         //message.channel.send("Be patient you turd.");
 
     }
-
 }
 
-function parsePins(channel){
+async function parsePins(channel){
     let pins = new Discord.Collection();
-    pins = fs.readFile(filePath, 'utf8', async function(error, data){
+    pins = await fs.readFile(filePath, 'utf8', function(error, data){
         if(error) throw error;
         let json = JSON.parse(data);
-        console.log(json);
         var randMessage = json[Math.floor(Math.random() * json.length)];
-         try{
+        try { 
             channel.send({embed: {
                 color: 0x139efb, // Lightish blue bar down the side
                 author: {
-                    ...(randMessage) && {name: randMessage.user.name}, // Nickname of the author of the pinned message
-                    ...(randMessage) && {icon_url: randMessage.user.avatar} // Avatar of the author of the pinned message
+                    name: randMessage.user.name, // Nickname of the author of the pinned message
+                    icon_url: randMessage.user.avatar // Avatar of the author of the pinned message
                 },
                 // If message has been deleted but pins haven't been reloaded, default behaviour is to jump anyway to the location of where the message was.
-                ...(randMessage) && {description: randMessage.content + "\n\n" + "[Go to original](https://discordapp.com/channels/" + randMessage.guildID + "/" + randMessage.channelID + "/" + randMessage.id + ")" }, // The content of the pinned message
+                description: randMessage.content + "\n\n" + "[Go to original](https://discordapp.com/channels/" + randMessage.guildID + "/" + randMessage.channelID + "/" + randMessage.id + ")" , // The content of the pinned message
                 image: {
-                    ...(randMessage) && {url: randMessage.attach}
+                    url: randMessage.attach
                 }
             }});
-         } catch (e) {
-             console.log(e);
-         }
+        } catch (error) {
+            console.log("**********" + error + "**********");
+            channel.send("There was an error. Please try \"!quote -l\"");
+        }
     });
 }
 
