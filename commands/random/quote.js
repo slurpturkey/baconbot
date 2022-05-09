@@ -40,8 +40,8 @@ async function parsePins(channel){
         channel.send({embed: {
             color: 0x139efb, // Lightish blue bar down the side
             author: {
-                name: randMessage.user.name, // Nickname of the author of the pinned message
-                icon_url: randMessage.user.avatar // Avatar of the author of the pinned message
+                ...(randMessage) && {name: randMessage.user.name}, // Nickname of the author of the pinned message
+                ...(randMessage) && {icon_url: randMessage.user.avatar} // Avatar of the author of the pinned message
             },
             // If message has been deleted but pins haven't been reloaded, default behaviour is to jump anyway to the location of where the message was.
             description: randMessage.content + "\n\n" + "[Go to original](https://discordapp.com/channels/" + randMessage.guildID + "/" + randMessage.channelID + "/" + randMessage.id + ")" , // The content of the pinned message
