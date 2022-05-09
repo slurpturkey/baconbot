@@ -31,14 +31,14 @@ class Quote extends commando.Command {
 
 }
 
-async function parsePins(channel){
+function parsePins(channel){
     let pins = new Discord.Collection();
-    pins = await fs.readFile(filePath, 'utf8', function(error, data){
+    pins = fs.readFile(filePath, 'utf8', async function(error, data){
         if(error) throw error;
         let json = JSON.parse(data);
         console.log(json);
         var randMessage = json[Math.floor(Math.random() * json.length)];
-        try {
+         try{
             channel.send({embed: {
                 color: 0x139efb, // Lightish blue bar down the side
                 author: {
@@ -50,10 +50,10 @@ async function parsePins(channel){
                 image: {
                     ...(randMessage) && {url: randMessage.attach}
                 }
-            }})
-        } catch(error) {
-            channel.send("Error: " + error);
-        };
+            }});
+         } catch (e) {
+             console.log(e);
+         }
     });
 }
 
