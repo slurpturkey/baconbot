@@ -36,6 +36,7 @@ async function parsePins(channel){
     pins = await fs.readFile(filePath, 'utf8', function(error, data){
         if(error) throw error;
         let json = JSON.parse(data);
+        console.log(json);
         var randMessage = json[Math.floor(Math.random() * json.length)];
         channel.send({embed: {
             color: 0x139efb, // Lightish blue bar down the side
@@ -44,9 +45,9 @@ async function parsePins(channel){
                 ...(randMessage) && {icon_url: randMessage.user.avatar} // Avatar of the author of the pinned message
             },
             // If message has been deleted but pins haven't been reloaded, default behaviour is to jump anyway to the location of where the message was.
-            description: randMessage.content + "\n\n" + "[Go to original](https://discordapp.com/channels/" + randMessage.guildID + "/" + randMessage.channelID + "/" + randMessage.id + ")" , // The content of the pinned message
+            ...(randMessage) && {description: randMessage.content + "\n\n" + "[Go to original](https://discordapp.com/channels/" + randMessage.guildID + "/" + randMessage.channelID + "/" + randMessage.id + ")" }, // The content of the pinned message
             image: {
-                url: randMessage.attach
+                ...(randMessage) && {url: randMessage.attach}
             }
         }});
     });
