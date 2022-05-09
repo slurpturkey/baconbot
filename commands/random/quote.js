@@ -38,18 +38,22 @@ async function parsePins(channel){
         let json = JSON.parse(data);
         console.log(json);
         var randMessage = json[Math.floor(Math.random() * json.length)];
-        channel.send({embed: {
-            color: 0x139efb, // Lightish blue bar down the side
-            author: {
-                ...(randMessage) && {name: randMessage.user.name}, // Nickname of the author of the pinned message
-                ...(randMessage) && {icon_url: randMessage.user.avatar} // Avatar of the author of the pinned message
-            },
-            // If message has been deleted but pins haven't been reloaded, default behaviour is to jump anyway to the location of where the message was.
-            ...(randMessage) && {description: randMessage.content + "\n\n" + "[Go to original](https://discordapp.com/channels/" + randMessage.guildID + "/" + randMessage.channelID + "/" + randMessage.id + ")" }, // The content of the pinned message
-            image: {
-                ...(randMessage) && {url: randMessage.attach}
-            }
-        }});
+        try {
+            channel.send({embed: {
+                color: 0x139efb, // Lightish blue bar down the side
+                author: {
+                    ...(randMessage) && {name: randMessage.user.name}, // Nickname of the author of the pinned message
+                    ...(randMessage) && {icon_url: randMessage.user.avatar} // Avatar of the author of the pinned message
+                },
+                // If message has been deleted but pins haven't been reloaded, default behaviour is to jump anyway to the location of where the message was.
+                ...(randMessage) && {description: randMessage.content + "\n\n" + "[Go to original](https://discordapp.com/channels/" + randMessage.guildID + "/" + randMessage.channelID + "/" + randMessage.id + ")" }, // The content of the pinned message
+                image: {
+                    ...(randMessage) && {url: randMessage.attach}
+                }
+            }})
+        } catch(error) {
+            console.log(error);
+        };
     });
 }
 
