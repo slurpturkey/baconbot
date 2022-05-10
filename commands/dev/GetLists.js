@@ -16,29 +16,26 @@ class GetLists extends commando.Command {
             name: 'getlists',
             group: 'dev',
             memberName: 'getlists',
-            description: 'Gets cards from Trello'
+            description: 'Gets lists from Trello'
         });
     }
 
-    async run(message, args){
-        console.log("test");
+    run(message, args){
         if(args == "-id") {
             //todo: add param to also return ids alongside names
         }
-        getListsRequest();
+        getListsRequest(message, args);
     }
 
-    getListsRequest() {
-        console.log("test1");
+    getListsRequest(message, args) {
+        console.log("test");
+        const post_request_args = "?key=" + key + "&token=" + token;
         const options = {
-            hostname: URL1,
+            hostname: baseUrl,
             method: 'GET',
-            path: `/1/boards/${boardId}/lists`,
-            headers: {
-                key: key,
-                token: token
-            }
+            path: `/1/boards/${boardId}/lists/${post_request_args}`,
         }
+
         const req = https.request(options, res => {
             console.log(`statusCode: ${res.statusCode}`)
         
@@ -50,9 +47,10 @@ class GetLists extends commando.Command {
         
             res.on('close', () => {
                 console.log('Retrieved all data');
-                var response = JSON.parse(data);
+                this.response = JSON.parse(data);
+                return this.response;
 
-                var cardNames = [];
+/*                 var cardNames = [];
                 for(let i = 0; i < response.length; i++) {
                     cardNames.push(response[i].name);
                 }
@@ -60,10 +58,7 @@ class GetLists extends commando.Command {
                 message.channel.send({embed: {
                     color: 0x850000, // red
                     description: cardNames.join(" \n")
-                }});
-
-                console.log(cardNames);
-
+                }}); */
             });
         });
 
@@ -76,3 +71,4 @@ class GetLists extends commando.Command {
 }
 
 module.exports = GetLists;
+

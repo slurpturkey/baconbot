@@ -21,7 +21,8 @@ class GetCards extends commando.Command {
         });
     }
 
-    run(message, args){
+    async run(message, args){
+        var listId = "";
         switch(args) {
             case "-to do":
                 listId = "62756dc0c020fb8cc16c1d10";
@@ -45,8 +46,16 @@ class GetCards extends commando.Command {
                 break;
             case "":
                 console.log("hello");
-                getLists = new GetLists();
-                getLists.getListsRequest();
+                let response = GetLists().prototype.getListsRequest(message, args);
+                console.log(response);
+                let msg = new GetLists();
+                msg.prototype.getListsRequest(message, args);
+                
+                console.log(response);
+                console.log(msg);
+                console.log(msg.response);
+                //msg = GetLists.prototype.getListsRequest(message, args);
+                console.log(msg.response);
                 message.channel.send("Please specify which list you wish to see cards for with \"-<list-name>\"")
                 break;
         }
