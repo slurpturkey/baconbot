@@ -1,8 +1,6 @@
 const commando = require('discord.js-commando');
 const fs = require('fs');
 const https = require('https');
-const GetLists = require('./GetLists');
-
 const filePath = "vendorauth.json";
 const auth = JSON.parse(fs.readFileSync(filePath, 'utf8'));
 const key = auth.trello_key;
@@ -23,82 +21,92 @@ class GetCards extends commando.Command {
 
     async run(message, args){
         var listId = "";
+        var listName = "";
         switch(args) {
-            case "-to do":
+            case "-to do": {
                 listId = "62756dc0c020fb8cc16c1d10";
-                getCards(listId);
-                break;
-            case "-doing":
+                listName = "To Do";
+                let cards = await this.getCardsRequest(listId);
+                this.printCards(cards, listName, message);
+            } break;
+            case "-doing": {
                 listId = "62756dc470c10242a86af89a";
-                getCards(listId);
-                break
-            case "-done":
+                listName = "Doing";
+                let cards = await this.getCardsRequest(listId);
+                this.printCards(cards, listName, message);
+            } break
+            case "-done": {
                 listId = "62756dc7f84a3732683c8290";
-                getCards(listId);
-                break;
-            case "-deployed":
+                listName = "Done";
+                let cards = await this.getCardsRequest(listId);
+                this.printCards(cards, listName, message);
+            } break;
+            case "-deployed": {
                 listId = "62756dca519e8076d04c3105";
-                getCards(listId);
-                break;
-            case "-suggestions":
+                listName = "Deployed";
+                cards = await this.getCardsRequest(listId);
+                this.printCards(cards, listName, message);
+            } break;
+            case "-suggestions": {
                 listId = "627859bfb5b5161121f4250b";
-                getCards(listId);
-                break;
+                listName = "Suggestions";
+                console.log("hello");
+                let cards = await this.getCardsRequest(listId);
+                this.printCards(cards, listName, message);
+            } break;
             case "":
                 let response = await GetLists.prototype.getListsRequest();
-                var cardNames = [];
+                var listNames = [];
                 for(let i = 0; i < response.length; i++) {
-                    cardNames.push(response[i].name);
+                    listNames.push(response[i].name);
                 }
-                var cardsList = cardNames.join("\n");
+                var listsList = listNames.join("\n");
                 message.channel.send(`Please specify a list with the "-<list-name>"\ command. The following lists are available: \n${cardsList}`);
                 break;
         }
+    }
 
-        const options = {
-            hostname: URL1,
-            method: 'GET',
-            path: path,
-            headers: {
-                key: key,
-                token: token
+
+    async getCardsRequest(listId) {
+        return new Promise ((resolve, reject) => {
+            const options = {
+                hostname: baseUrl,
+                method: 'GET',
+                path: `/1/lists/${listId}/cards/${authParams}`
             }
-        };
-        console.log(options);
-        /* const req = https.request(options, res => {
-            console.log(`statusCode: ${res.statusCode}`)
-        
-            let data = '';
-        
-            res.on('data', (chunk) => {
-                data += chunk;
+
+            const req = https.request(options, res => {
+                console.log(`statusCode: ${res.statusCode}`)
+            
+                let data = '';
+            
+                res.on('data', (chunk) => {
+                    data += chunk;
+                });
+            
+                res.on('close', () => {
+                    console.log('Retrieved all data');
+                    resolve (JSON.parse(data));
+                });
             });
-        
-            res.on('close', () => {
-                console.log('Retrieved all data');
-                var response = JSON.parse(data);
 
-                var cardNames = [];
-                for(let i = 0; i < response.length; i++) {
-                    cardNames.push(response[i].name);
-                }
+            req.on('error', error => {
+                reject(error);
+                console.error(error);
+            }),
 
-                message.channel.send({embed: {
-                    color: 0x850000, // red
-                    description: cardNames.join(" \n")
-                }});
-
-                console.log(cardNames);
-
-            });
+            req.end();
         });
+    }
 
-        req.on('error', error => {
-            console.error(error);
-        }),
-
-        req.end();*/
-    } 
-}
+    printCards(cards, listName, message) {
+        var cardNames = [];
+        for(let i = 0; i < cards.length; i++) {
+            cardNames.push(cards[i].name);
+        }
+        var cardsList = cardNames.join("\n");
+        message.channel.send(`Jobs on the ${listName} list: \n${cardsList}`);
+    }
+} 
 
 module.exports = GetCards;
