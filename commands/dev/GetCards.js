@@ -50,8 +50,8 @@ class GetCards extends commando.Command {
                 for(let i = 0; i < response.length; i++) {
                     cardNames.push(response[i].name);
                 }
-                var cardsList = cardNames.join(" \n");
-                message.channel.send(`Please specify which list you wish to see cards for with "-<list-name>" \n ${cardsList}`);
+                var cardsList = cardNames.join("\n");
+                message.channel.send(`Please specify a list with the "-<list-name>"\ command. The following lists are available: n${cardsList}`);
                 break;
         }
 
