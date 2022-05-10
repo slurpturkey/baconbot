@@ -1,6 +1,8 @@
 const commando = require('discord.js-commando');
+const { resolveCaa } = require('dns');
 const fs = require('fs');
 const https = require('https');
+const { setTimeout } = require('timers');
 
 const filePath = "vendorauth.json";
 const auth = JSON.parse(fs.readFileSync(filePath, 'utf8'));
@@ -27,46 +29,39 @@ class GetLists extends commando.Command {
         getListsRequest(message, args);
     }
 
-    getListsRequest(message, args) {
-        console.log("test");
-        const post_request_args = "?key=" + key + "&token=" + token;
-        const options = {
-            hostname: baseUrl,
-            method: 'GET',
-            path: `/1/boards/${boardId}/lists/${post_request_args}`,
-        }
-
-        const req = https.request(options, res => {
-            console.log(`statusCode: ${res.statusCode}`)
-        
-            let data = '';
-        
-            res.on('data', (chunk) => {
-                data += chunk;
-            });
-        
-            res.on('close', () => {
-                console.log('Retrieved all data');
-                this.response = JSON.parse(data);
-                return this.response;
-
-/*                 var cardNames = [];
-                for(let i = 0; i < response.length; i++) {
-                    cardNames.push(response[i].name);
-                }
-
-                message.channel.send({embed: {
-                    color: 0x850000, // red
-                    description: cardNames.join(" \n")
-                }}); */
-            });
-        });
-
-        req.on('error', error => {
-            console.error(error);
-        }),
-
-        req.end();
+    async getListsRequest(message, args) {
+        return new Promise ((resolve, reject) => {
+            console.log("test");
+            const post_request_args = "?key=" + key + "&token=" + token;
+            const options = {
+                hostname: baseUrl,
+                method: 'GET',
+                path: `/1/boards/${boardId}/lists/${post_request_args}`,
+            }
+    
+            const req = https.request(options, res => {
+                console.log(`statusCode: ${res.statusCode}`)
+            
+                let data = '';
+            
+                res.on('data', (chunk) => {
+                    data += chunk;
+                });
+            
+                res.on('close', () => {
+                    console.log('Retrieved all data');
+                    resolve (JSON.parse(data));
+                    return JSON.parse(data);
+                });
+            })
+            
+            req.on('error', error => {
+                reject(error);
+                console.error(error);
+              })
+              
+            req.end();
+        })
     }
 }
 

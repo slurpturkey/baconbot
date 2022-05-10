@@ -45,18 +45,13 @@ class GetCards extends commando.Command {
                 getCards(listId);
                 break;
             case "":
-                console.log("hello");
-                let response = GetLists().prototype.getListsRequest(message, args);
-                console.log(response);
-                let msg = new GetLists();
-                msg.prototype.getListsRequest(message, args);
-                
-                console.log(response);
-                console.log(msg);
-                console.log(msg.response);
-                //msg = GetLists.prototype.getListsRequest(message, args);
-                console.log(msg.response);
-                message.channel.send("Please specify which list you wish to see cards for with \"-<list-name>\"")
+                let response = await GetLists.prototype.getListsRequest();
+                var cardNames = [];
+                for(let i = 0; i < response.length; i++) {
+                    cardNames.push(response[i].name);
+                }
+                var cardsList = cardNames.join(" \n");
+                message.channel.send(`Please specify which list you wish to see cards for with "-<list-name>" \n ${cardsList}`);
                 break;
         }
 
@@ -70,7 +65,7 @@ class GetCards extends commando.Command {
             }
         };
         console.log(options);
-        const req = https.request(options, res => {
+        /* const req = https.request(options, res => {
             console.log(`statusCode: ${res.statusCode}`)
         
             let data = '';
@@ -102,8 +97,8 @@ class GetCards extends commando.Command {
             console.error(error);
         }),
 
-        req.end();
-    }
+        req.end();*/
+    } 
 }
 
 module.exports = GetCards;
