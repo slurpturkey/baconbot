@@ -1,6 +1,7 @@
 const commando = require('discord.js-commando');
 const fs = require('fs');
 const https = require('https');
+const GetLists = require('./GetLists');
 const filePath = "vendorauth.json";
 const auth = JSON.parse(fs.readFileSync(filePath, 'utf8'));
 const key = auth.trello_key;
@@ -22,7 +23,8 @@ class GetCards extends commando.Command {
     async run(message, args){
         var listId = "";
         var listName = "";
-        switch(args) {
+        switch(args.toLowerCase()) {
+            case "-todo":
             case "-to do": {
                 listId = "62756dc0c020fb8cc16c1d10";
                 listName = "To Do";
@@ -35,6 +37,8 @@ class GetCards extends commando.Command {
                 let cards = await this.getCardsRequest(listId);
                 this.printCards(cards, listName, message);
             } break
+            case "-finished":
+            case "-complete":
             case "-done": {
                 listId = "62756dc7f84a3732683c8290";
                 listName = "Done";
@@ -50,19 +54,22 @@ class GetCards extends commando.Command {
             case "-suggestions": {
                 listId = "627859bfb5b5161121f4250b";
                 listName = "Suggestions";
-                console.log("hello");
                 let cards = await this.getCardsRequest(listId);
                 this.printCards(cards, listName, message);
             } break;
-            case "":
+            case "": {
                 let response = await GetLists.prototype.getListsRequest();
                 var listNames = [];
                 for(let i = 0; i < response.length; i++) {
                     listNames.push(response[i].name);
                 }
                 var listsList = listNames.join("\n");
-                message.channel.send(`Please specify a list with the "-<list-name>"\ command. The following lists are available: \n${cardsList}`);
-                break;
+                message.channel.send(`Please specify a list with the "-<list-name>"\ command. The following lists are available: \n${listsList}`);
+            }break;
+            case "-h":
+            case "-help": {
+                message.channel.send("You can see the list of available lists by executing this command without flags. Otherwise, specifiy your desired list with \"-<list-name>\".");
+            } break
         }
     }
 
