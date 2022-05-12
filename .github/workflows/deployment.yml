@@ -60,7 +60,7 @@ jobs:
           working-directory: /usr/local/bin/baconbot
           hosts: 'opc@${{ secrets.SSH_HOST }}'
           privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
-          command: git pull baconbotssh
+          command: cd /usr/local/bin/baconbot && git pull baconbotssh
 
       - name: Run restart script
         run: sh ./deploy.sh
