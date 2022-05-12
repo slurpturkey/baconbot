@@ -62,7 +62,6 @@ jobs:
           command: cd /usr/local/bin/baconbot && git pull origin master
 
       - name: Run restart script
-        working-directory: /usr/bin/local/baconbot
         run: sh ./deploy.sh
         shell: bash
         
