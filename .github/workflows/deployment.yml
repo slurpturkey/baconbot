@@ -51,7 +51,7 @@ jobs:
           script: |
             cd /usr/local/bin/baconbot
             git remote -v
-            git pull origin
+            git pull baconbotorigin
 
       - name: Run restart script
         run: sh ./deploy.sh
