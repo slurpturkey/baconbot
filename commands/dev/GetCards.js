@@ -23,53 +23,63 @@ class GetCards extends commando.Command {
     async run(message, args){
         var listId = "";
         var listName = "";
-        switch(args.toLowerCase()) {
-            case "-todo":
-            case "-to do": {
-                listId = "62756dc0c020fb8cc16c1d10";
-                listName = "To Do";
-                let cards = await this.getCardsRequest(listId);
-                this.printCards(cards, listName, message);
-            } break;
-            case "-doing": {
-                listId = "62756dc470c10242a86af89a";
-                listName = "Doing";
-                let cards = await this.getCardsRequest(listId);
-                this.printCards(cards, listName, message);
-            } break
-            case "-finished":
-            case "-complete":
-            case "-done": {
-                listId = "62756dc7f84a3732683c8290";
-                listName = "Done";
-                let cards = await this.getCardsRequest(listId);
-                this.printCards(cards, listName, message);
-            } break;
-            case "-deployed": {
-                listId = "62756dca519e8076d04c3105";
-                listName = "Deployed";
-                cards = await this.getCardsRequest(listId);
-                this.printCards(cards, listName, message);
-            } break;
-            case "-suggestions": {
-                listId = "627859bfb5b5161121f4250b";
-                listName = "Suggestions";
-                let cards = await this.getCardsRequest(listId);
-                this.printCards(cards, listName, message);
-            } break;
-            case "": {
-                let response = await GetLists.prototype.getListsRequest();
-                var listNames = [];
-                for(let i = 0; i < response.length; i++) {
-                    listNames.push(response[i].name);
+        if(args) {
+            console.log(args);
+            const argsList = args.trim().split(/ +/g);
+            console.log(argsList);
+            for (let i = 0; i < argsList.length; i++) {
+                switch(args.toLowerCase()) {
+                    case "-todo":
+                    case "-to do": {
+                        listId = "62756dc0c020fb8cc16c1d10";
+                        listName = "To Do";
+                        let cards = await this.getCardsRequest(listId);
+                        this.printCards(cards, listName, message);
+                    } break;
+                    case "-doing": {
+                        listId = "62756dc470c10242a86af89a";
+                        listName = "Doing";
+                        let cards = await this.getCardsRequest(listId);
+                        this.printCards(cards, listName, message);
+                    } break
+                    case "-finished":
+                    case "-complete":
+                    case "-done": {
+                        listId = "62756dc7f84a3732683c8290";
+                        listName = "Done";
+                        let cards = await this.getCardsRequest(listId);
+                        this.printCards(cards, listName, message);
+                    } break;
+                    case "-deployed": {
+                        listId = "62756dca519e8076d04c3105";
+                        listName = "Deployed";
+                        cards = await this.getCardsRequest(listId);
+                        this.printCards(cards, listName, message);
+                    } break;
+                    case "-suggestions": {
+                        listId = "627859bfb5b5161121f4250b";
+                        listName = "Suggestions";
+                        let cards = await this.getCardsRequest(listId);
+                        this.printCards(cards, listName, message);
+                    } break;
+                    case "-h":
+                    case "-help": {
+                        message.channel.send("You can see the list of available lists by executing this command without flags. Otherwise, specifiy your desired list with \"-<list-name>\".");
+                    } break
+                    default: {
+                        message.channel.send(`Error: unrecognised flag: "${argsList[i]}"`);
+                        return;
+                    }break;
                 }
-                var listsList = listNames.join("\n");
-                message.channel.send(`Please specify a list with the "-<list-name>"\ command. The following lists are available: \n${listsList}`);
-            }break;
-            case "-h":
-            case "-help": {
-                message.channel.send("You can see the list of available lists by executing this command without flags. Otherwise, specifiy your desired list with \"-<list-name>\".");
-            } break
+            }
+        } else {
+            let response = await GetLists.prototype.getListsRequest();
+            var listNames = [];
+            for(let i = 0; i < response.length; i++) {
+                listNames.push(response[i].name);
+            }
+            var listsList = listNames.join("\n");
+            message.channel.send(`Please specify a list with the "-<list-name>"\ command. The following lists are available: \n${listsList}`);
         }
     }
 

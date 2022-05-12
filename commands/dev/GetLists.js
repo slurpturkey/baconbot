@@ -19,11 +19,18 @@ class GetLists extends commando.Command {
         });
     }
 
-    run(message, args){
+    async run(message, args){
         if(args == "-id") {
             //todo: add param to also return ids alongside names
+            returnListId = true;
         }
-        getListsRequest(message, args);
+        let response = await GetLists.prototype.getListsRequest();
+        var listNames = [];
+        for(let i = 0; i < response.length; i++) {
+            listNames.push(response[i].name);
+        }
+        var listsList = listNames.join("\n");
+        message.channel.send(`The following lists are available: \n${listsList}`);
     }
 
     async getListsRequest(message, args) {
