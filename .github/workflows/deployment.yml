@@ -47,12 +47,16 @@ jobs:
       - name: Move to project dir
         run: cd /usr/local/bin/baconbot
         
-      - name: Deploy repo
-        uses: JimCronqvist/action-ssh@master
-        with:
-          hosts: 'opc@${{ secrets.SSH_HOST }}'
-          privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
-          command: sudo git pull origin
+#       - name: Deploy repo
+#         uses: JimCronqvist/action-ssh@master
+#         with:
+#           hosts: 'opc@${{ secrets.SSH_HOST }}'
+#           privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
+#           command: sudo git pull origin
+
+      - name: Deploy Repo
+        working-directory: /usr/local/bin/baconbot
+        run: git pull
 
       - name: Run restart script
         run: sh ./deploy.sh
