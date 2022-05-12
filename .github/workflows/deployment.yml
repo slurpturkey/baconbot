@@ -57,10 +57,9 @@ jobs:
       - name: Restart baconbot.service
         uses: JimCronqvist/action-ssh@master
         with:
-          working-directory: /usr/local/bin/baconbot
           hosts: 'opc@${{ secrets.SSH_HOST }}'
           privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
-          command: cd /usr/local/bin/baconbot && git pull origin
+          command: cd /usr/local/bin/baconbot && git pull origin master
 
       - name: Run restart script
         run: sh ./deploy.sh
