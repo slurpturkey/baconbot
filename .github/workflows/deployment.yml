@@ -54,7 +54,7 @@ jobs:
 #             git remote -v
 #             git pull baconbotssh
             
-      - name: Restart baconbot.service
+      - name: Deploy code with git
         uses: JimCronqvist/action-ssh@master
         with:
           hosts: 'opc@${{ secrets.SSH_HOST }}'
