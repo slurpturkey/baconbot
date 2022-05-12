@@ -31,9 +31,17 @@ jobs:
 #       - name: Deploy repo with rsync
 #         run: rsync -v -rvz --filter=':- .gitignore' ./ opc@${{ secrets.SSH_HOST }}:/usr/local/bin/baconbot
 
+#       - name: Deploy Repo
+#         working-directory: /usr/local/bin/baconbot
+#         run: git pull
+
       - name: Deploy Repo
-        working-directory: /usr/local/bin/baconbot
-        run: git pull
+        uses: JimCronqvist/action-ssh@master
+        with:
+          working-directory: /usr/local/bin/baconbot
+          hosts: 'opc@${{ secrets.SSH_HOST }}'
+          privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
+          command: git pull
 
       - name: Run restart script
         run: sh ./deploy.sh
