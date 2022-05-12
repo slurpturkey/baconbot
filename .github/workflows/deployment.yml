@@ -46,6 +46,7 @@ jobs:
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
           username: 'opc'
           script: |
             cd /usr/local/bin/baconbot
