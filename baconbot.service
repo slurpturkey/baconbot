@@ -7,8 +7,6 @@ Type=simple
 Restart=always
 RestartSec=1
 User=nobody
-#WorkingDirectory=/home/runner/work/baconbot/baconbot
-#
 
 WorkingDirectory=/usr/local/bin/baconbot
 ExecStart=/usr/local/bin/baconbot/index.js
