@@ -42,15 +42,24 @@ jobs:
 #           privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
 #           command: git pull
 
-      - name: executing remote ssh commands using password
-        uses: appleboy/ssh-action@master
+#       - name: executing remote ssh commands using password
+#         uses: appleboy/ssh-action@master
+#         with:
+#           host: ${{ secrets.SSH_HOST }}
+#           key: ${{ secrets.SSH_PRIVATE_KEY }}
+#           name: ''
+#           username: 'opc'
+#           script: |
+#             cd /usr/local/bin/baconbot
+#             git remote -v
+#             git pull baconbotssh
+            
+      - name: Restart baconbot.service
+        uses: JimCronqvist/action-ssh@master
         with:
-          host: ${{ secrets.SSH_HOST }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          username: 'opc'
-          script: |
-            cd /usr/local/bin/baconbot
-            git pull
+          hosts: 'opc@${{ secrets.SSH_HOST }}'
+          privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
+          command: cd /usr/local/bin/baconbot && git pull origin master
 
       - name: Run restart script
         run: sh ./deploy.sh
