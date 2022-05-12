@@ -61,9 +61,7 @@ jobs:
           privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
           command: cd /usr/local/bin/baconbot && git pull origin master
 
-#       - name: Run restart script
-#         run: sh ./deploy.sh
-#         shell: bash
+
 
       - name: Update dependencies
         uses: JimCronqvist/action-ssh@master
@@ -79,9 +77,14 @@ jobs:
           privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
           command: sudo chmod -R 777 /usr/local/bin/baconbot
 
-      - name: Restart baconbot.service
-        uses: JimCronqvist/action-ssh@master
-        with:
-          hosts: 'opc@${{ secrets.SSH_HOST }}'
-          privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
-          command: cd /usr/local/bin/baconbot && sudo systemctl restart baconbot.service
+#       - name: Restart baconbot.service
+#         uses: JimCronqvist/action-ssh@master
+#         with:
+#           hosts: 'opc@${{ secrets.SSH_HOST }}'
+#           privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
+#           command: cd /usr/local/bin/baconbot && sudo systemctl restart baconbot.service
+
+      - name: Run restart script
+        run: sh ./deploy.sh
+        shell: bash
+      
