@@ -61,9 +61,16 @@ jobs:
           privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
           command: cd /usr/local/bin/baconbot && git pull origin master
 
-      - name: Run restart script
-        run: sh ./deploy.sh
-        shell: bash
+#       - name: Run restart script
+#         run: sh ./deploy.sh
+#         shell: bash
+
+      - name: Update dependencies
+        uses: JimCronqvist/action-ssh@master
+        with:
+          hosts: 'opc@${{ secrets.SSH_HOST }}'
+          privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
+          command: cd /usr/local/bin/baconbot && sudo npm install
         
       - name: Change dir permissions
         uses: JimCronqvist/action-ssh@master
