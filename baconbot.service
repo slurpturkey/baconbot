@@ -7,8 +7,9 @@ Type=simple
 Restart=always
 RestartSec=1
 User=nobody
-WorkingDirectory=/home/runner/work/baconbot/baconbot
-ExecStart=/home/runner/work/baconbot/baconbot/index.js
+
+WorkingDirectory=/usr/local/bin/baconbot
+ExecStart=/usr/local/bin/baconbot/index.js
 
 [Install]
 WantedBy=multi-user.target
