@@ -28,8 +28,38 @@ jobs:
       - name: Adding Known Hosts
         run: ssh-keyscan -H ${{ secrets.SSH_HOST }}  >> ~/.ssh/known_hosts
           
-      - name: Deploy repo with rsync
-        run: rsync -v -rvz --filter=':- .gitignore' ./ opc@${{ secrets.SSH_HOST }}:/usr/local/bin/baconbot
+#       - name: Deploy repo with rsync
+#         run: rsync -v -rvz --filter=':- .gitignore' ./ opc@${{ secrets.SSH_HOST }}:/usr/local/bin/baconbot
+
+#       - name: Deploy Repo
+#         working-directory: /usr/local/bin/baconbot
+#         run: git pull
+
+#       - name: Deploy Repo
+#         uses: JimCronqvist/action-ssh@master
+#         with:
+#           hosts: 'opc@${{ secrets.SSH_HOST }}'
+#           privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
+#           command: git pull
+
+#       - name: executing remote ssh commands using password
+#         uses: appleboy/ssh-action@master
+#         with:
+#           host: ${{ secrets.SSH_HOST }}
+#           key: ${{ secrets.SSH_PRIVATE_KEY }}
+#           name: ''
+#           username: 'opc'
+#           script: |
+#             cd /usr/local/bin/baconbot
+#             git remote -v
+#             git pull baconbotssh
+            
+      - name: Deploy code with git
+        uses: JimCronqvist/action-ssh@master
+        with:
+          hosts: 'opc@${{ secrets.SSH_HOST }}'
+          privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
+          command: cd /usr/local/bin/baconbot && git pull origin master
 
       - name: Run restart script
         run: sh ./deploy.sh
