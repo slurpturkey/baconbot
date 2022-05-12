@@ -35,13 +35,21 @@ jobs:
 #         working-directory: /usr/local/bin/baconbot
 #         run: git pull
 
-      - name: Deploy Repo
-        uses: JimCronqvist/action-ssh@master
+#       - name: Deploy Repo
+#         uses: JimCronqvist/action-ssh@master
+#         with:
+#           hosts: 'opc@${{ secrets.SSH_HOST }}'
+#           privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
+#           command: git pull
+
+      - name: executing remote ssh commands using password
+        uses: appleboy/ssh-action@master
         with:
-          working-directory: /usr/local/bin/baconbot
-          hosts: 'opc@${{ secrets.SSH_HOST }}'
-          privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
-          command: git pull
+          host: ${{ secrets.SSH_HOST }}
+          username: 'opc'
+          script: |
+            cd /usr/local/bin/baconbot
+            git pull
 
       - name: Run restart script
         run: sh ./deploy.sh
