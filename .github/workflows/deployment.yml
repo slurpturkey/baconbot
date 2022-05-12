@@ -33,7 +33,7 @@ jobs:
           KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         with:
           source: "*"
-          target: "/usr/local/bin/bacbonbot"
+          target: "/usr/local/bin/baconbot"
 
           
           
