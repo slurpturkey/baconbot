@@ -84,4 +84,4 @@ jobs:
         with:
           hosts: 'opc@${{ secrets.SSH_HOST }}'
           privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
-          command: sudo systemctl restart baconbot.service
+          command: cd /usr/local/bin/baconbot && sudo systemctl restart baconbot.service
