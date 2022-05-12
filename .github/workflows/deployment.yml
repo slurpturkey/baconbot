@@ -50,7 +50,8 @@ jobs:
           username: 'opc'
           script: |
             cd /usr/local/bin/baconbot
-            git pull
+            git remote -v
+            git pull origin
 
       - name: Run restart script
         run: sh ./deploy.sh
