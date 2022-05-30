@@ -12,6 +12,7 @@
     "@datafire/oxforddictionaries": "^5.0.0",
     "audio-generator": "^2.1.2",
     "audio-speaker": "^1.5.1",
+    "diagnostics_channel": "^1.1.0",
     "discord.js": "^11.6.4",
     "discord.js-commando": "^0.9.0",
     "gson": "^0.1.5",
@@ -30,6 +31,6 @@
     "snekfetch": "^4.0.4",
     "synth-javascript": "^1.2.11",
     "synth-js": "^0.1.2",
-    "unirest": "^0.5.1"
+    "unirest": "^0.6.0"
   }
 }
